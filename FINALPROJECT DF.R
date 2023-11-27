@@ -54,6 +54,13 @@ for(i in 1:nrow(df)){
   df[i, "Tougher Sport"] <- is_tougher_sport(df_name, df_year)
 }
 
+#difference between "rich" rank and "toughness" rank
+for(i in 1:nrow(df)){
+  df_year_rank <- df[i, "Current.Rank"]
+  df_toughness_rank <- df[i, "RANK"]
+  df[i, "Difference in Wealth Rank and Toughness Rank"] <- df_year_rank - df_toughness_rank
+}
+
 #percentage of list numerical variable, shows the percentage of how much of the list is made of a particular sport
 for(i in 1:nrow(df)){
   df_sport <- df[i, "Sport"]
