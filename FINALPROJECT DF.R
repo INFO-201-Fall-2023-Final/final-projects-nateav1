@@ -22,7 +22,42 @@ forbes_richest$Sport <- str_to_title(forbes_richest$Sport)
 
 #merge datasets
 df <- merge(x = forbes_richest, y = toughest_sports, by = "Sport", all_x = TRUE)
+#merge removes Deion Sanders from the dataset who played both football and baseball, unsure how we want to fix
 
-#insert variables below
-#age <-
-#df$age = age
+#variable containing number of unique sports listed in merged dataset
+#indicates number of sports in which athletes made high earnings
+num_listed_sports <- length(unique(df$Sport))
+
+#variable containing the strings of those unique sports
+string_listed_sports <- unique(df$Sport)
+
+#for loop to create variables showing how many times a sport was listed in dataset
+for(i in 1:num_listed_sports){
+  count_string <- sprintf("%s_count", string_listed_sports[i])
+  assign(count_string,sum(str_detect(df$Sport, string_listed_sports[i])))
+}
+
+#additional column variables
+
+#tougher sport categorical variable, rates whether the athlete's sport was in the top 50 percent of toughness, boolean value
+#tougher sport function
+is_tougher_sport <- function(name, year){
+  if(df[df$Name == name & df$Year == year, "RANK"] <= 30){
+    return(TRUE)
+  }else{
+    return(FALSE)
+  }
+}
+for(i in 1:nrow(df)){
+  df_name <- df[i, "Name"]
+  df_year <- df[i, "Year"]
+  df[i, "Tougher Sport"] <- is_tougher_sport(df_name, df_year)
+}
+
+#percentage of list numerical variable, shows the percentage of how much of the list is made of a particular sport
+for(i in 1:nrow(df)){
+  df_sport <- df[i, "Sport"]
+  df[i, "Sport Percentage of List"] <- round(sum(str_detect(df$Sport, df_sport)) / nrow(df) * 100, 0)
+}
+
+#still need to add summarization dataframe, perhaps a summary adding athletes full earnings on list together?
