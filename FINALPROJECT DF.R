@@ -67,4 +67,10 @@ for(i in 1:nrow(df)){
   df[i, "Sport Percentage of List"] <- round(sum(str_detect(df$Sport, df_sport)) / nrow(df) * 100, 0)
 }
 
-#still need to add summarization dataframe, perhaps a summary adding athletes full earnings on list together?
+#summarize athletes full earnings dataframe
+grouped_athletes <- group_by(df, Name)
+grouped_athletes <- summarize(grouped_athletes, Full_Earnings_Millions = sum(earnings....million.), Mean_Earnings_Millions = mean(earnings....million.))
+
+#summarize sports full earnings
+grouped_sports <- group_by(df, Sport)
+grouped_sports <- summarize(grouped_sports, Full_Earnings_Millions = sum(earnings....million.), Mean_Earnings_Millions = mean(earnings....million.))
