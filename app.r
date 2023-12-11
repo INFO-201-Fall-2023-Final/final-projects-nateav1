@@ -5,12 +5,11 @@ library(dplyr)
 library(fmsb)
 library(shinythemes)
 
+finaldf <- read.csv("df.csv")
+
 wealth_over_time <- ggplot(finaldf, aes(x = Year, y = earnings....million., color = Year)) + geom_line() +
   labs(x = "Year", y = "Earnings in Millions", color = "Year")
 
-finaldf <- read.csv("df.csv")
-
- 
 
 Home <- fluidPage(fluidPage(theme = shinytheme("superhero"),
   mainPanel(
